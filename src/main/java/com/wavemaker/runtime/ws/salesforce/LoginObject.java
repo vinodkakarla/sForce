@@ -36,6 +36,14 @@ public class LoginObject {
 	private SforceService service;
 
 	private SessionHeader sessionHeader = null;
+	
+	public LoginObject() {
+		try {
+			setSforceService(new SforceService());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public String logIn(String userName, String password) throws Exception {
 		if (this.sessionHeader != null) {
@@ -93,7 +101,7 @@ public class LoginObject {
 	private String search() throws Exception {
 		Search parameters = new Search();
 
-		parameters.setSearchString("FIND {DummyAccount} IN Name FIELDS RETURNING  Contact(Id, Phone, FirstName, LastName), Lead(Id, Phone, FirstName, LastName), Account(Id, Phone, Name)");
+		parameters.setSearchString("FIND {*} IN Name FIELDS RETURNING  Contact(Id, Phone, FirstName, LastName), Lead(Id, Phone, FirstName, LastName), Account(Id, Phone, Name)");
 
 		SearchResponse response = this.service.search(parameters,
 				sessionHeader, null, null);
@@ -129,7 +137,6 @@ public class LoginObject {
 
 	public static void main(String[] args) throws Exception {
 		LoginObject obj = new LoginObject();
-		obj.setSforceService(new SforceService());
 		System.out.println(obj.logIn("kvinod.kakarla@gmail.com",
 				"Dummy@123NKw0a23ZoI3oVtf7KrmX3mz6G"));
 		System.out.println(obj.logIn("kvinod.kakarla@gmail.com",
